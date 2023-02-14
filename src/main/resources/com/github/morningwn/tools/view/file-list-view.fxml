@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<VBox stylesheets="@../css/fileList.css"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.github.morningwn.tools.controller.FileListController"
+      minHeight="100" prefHeight="400" maxHeight="500" fx:id="layout">
+    <HBox fx:id="lab" styleClass="lab" prefHeight="10">
+        <Button onAction="#onRefresh">刷新</Button>
+        <Button fx:id="changeLockBtn" onAction="#onChangeLock">解锁</Button>
+        <Button onAction="#onDelete">删除</Button>
+        <Button fx:id="hideBtn" onAction="#onHide">隐藏</Button>
+
+        <!--        <ImageView styleClass="image-icon" fitWidth="20" fitHeight="20">-->
+        <!--            <Image url="@../svg/refresh.png" />-->
+        <!--        </ImageView>-->
+        <!--        <ImageView fx:id="lockImage" styleClass="image-icon" fitWidth="20" fitHeight="20" onMouseClicked="#checkLock">-->
+        <!--            <Image url="@../svg/lock.png" />-->
+        <!--        </ImageView>-->
+    </HBox>
+    <ListView id="fileList" fx:id="fileList" minHeight="100" prefHeight="400" maxHeight="500">
+    </ListView>
+
+</VBox>

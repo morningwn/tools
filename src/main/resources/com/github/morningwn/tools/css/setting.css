@@ -1,0 +1,40 @@
+* {
+    -fx-font-size: 14;
+
+}
+
+.text-field:focused {
+    /*-fx-background-color: transparent, white, transparent, white;*/
+}
+
+.setting-cell {
+    -fx-padding: 10 0 10 0;
+}
+
+.setting-cell-title {
+    -fx-border-width: 0 0 1 0;
+    -fx-font-weight: bold;
+    -fx-border-color: #afafaf;
+}
+
+.setting-cell-content {
+    /*-fx-padding: 10 0 0 0;*/
+}
+
+.setting-cell-item {
+    -fx-padding: 10 0 0 0;
+    -fx-spacing: 5;
+}
+
+.setting-cell-item-left {
+    -fx-min-width: 120;
+    -fx-max-width: 120;
+    -fx-pref-width: 120;
+    -fx-alignment: center-right;
+}
+
+.setting-cell-btn {
+    -fx-padding: 5 0 5 0;
+    -fx-spacing: 5;
+    -fx-alignment: center-right;
+}

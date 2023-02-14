@@ -1,0 +1,216 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.beryx.jlink' version '2.25.0'
+    id "com.gluonhq.gluonfx-gradle-plugin" version "1.0.7"
+}
+
+group 'com.github.morningwn'
+version '1.1'
+
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/public/' }
+//    maven { url 'https://raw.githubusercontent.com/maven-eclipse/swt-repo/master/' }
+    mavenLocal()
+    mavenCentral()
+}
+
+ext {
+    junitVersion = '5.8.2'
+    jnaVersion = '5.10.0'
+}
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+application {
+    applicationName = 'Tools'
+    mainModule = 'com.github.morningwn.tools'
+    mainClass = 'com.github.morningwn.tools.Main'
+}
+
+javafx {
+    version = '17.0.2'
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.media', 'javafx.swing']
+}
+
+dependencies {
+    implementation('org.controlsfx:controlsfx:11.1.1')
+//    implementation('com.dlsc.formsfx:formsfx-core:11.5.0') {
+//        exclude(group: 'org.openjfx')
+//    }
+//    implementation('net.synedra:validatorfx:0.3.1') {
+//        exclude(group: 'org.openjfx')
+//    }
+//    implementation('org.kordamp.ikonli:ikonli-javafx:12.3.1')
+//    implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
+//    implementation('eu.hansolo:tilesfx:17.1.9') {
+//        exclude(group: 'org.openjfx')
+//    }
+//    implementation('com.github.almasb:fxgl:17.1') {
+//        exclude(group: 'org.openjfx')
+//    }
+
+    implementation('com.h2database:h2:2.1.214')
+//    implementation('org.xerial:sqlite-jdbc:3.34.0')
+    implementation('com.google.code.gson:gson:2.9.1')
+
+    implementation 'com.github.kwhat:jnativehook:2.2.2'
+    // 系统监控
+    //implementation('com.github.oshi:oshi-core:6.3.1')
+    // jna
+    implementation "net.java.dev.jna:jna:${jnaVersion}"
+    implementation "net.java.dev.jna:jna-platform:${jnaVersion}"
+
+    // javacv
+//    implementation 'org.bytedeco:javacv-platform:1.5.8'
+
+    implementation('ch.qos.logback:logback-classic:1.4.4')
+//    implementation 'org.eclipse.swt:org.eclipse.swt.win32.win32.x86_64:4.4'
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+}
+
+test {
+    //useJUnitPlatform()
+}
+jlink {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher {
+        name = application.applicationName
+        imageName = application.applicationName
+    }
+    imageZip.set(project.file("${project.buildDir}/image-zip/Tools.zip"))
+
+    jpackage {
+        outputDir = "build-package"
+        imageName = application.applicationName
+        skipInstaller = false
+        installerName = application.applicationName
+        appVersion = version.toString()
+
+        if (org.gradle.internal.os.OperatingSystem.current().windows) {
+            icon = "src/main/resources/application.ico"
+            installerOptions += ["--win-dir-chooser", "--win-menu", "--win-shortcut", "--win-menu-group", application.applicationName]
+        }
+        if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
+            icon = "src/main/resources/application.icns"
+        }
+        if (org.gradle.internal.os.OperatingSystem.current().linux) {
+            icon = "src/main/resources/application.png"
+            installerType = "deb"
+            installerOptions += ["--linux-deb-maintainer", "morningwn@126.com", "--linux-menu-group", application.applicationName, "--linux-shortcut"]
+        }
+    }
+}
+
+task printDependentJarsList {
+    // 打印出项目所依赖的jar包路径集合并使用 ; 拼接
+    // projectJarPath: 当前项目 gradle jar 制作出来的 jar
+    // dependentJarsPath: 项目依赖的第三方 jar 集合
+    // 使用：jpackage -p "${projectJarPath};${dependentJarsPath}"
+
+    println("----------")
+    println(configurations.getByName("runtimeClasspath").files.join(";"))
+    println("----------")
+}
+
+task copyDependencies(type: Copy) {
+    from(configurations.getByName("runtimeClasspath"))
+    into("$buildDir/modules")
+}
+//task copyBin(type: Copy) {
+//    dependsOn("jlink")
+//
+//    println("copybin $projectDir/bin -> $buildDir/Tools/bin")
+//
+//    from("$projectDir/bin")
+//    into("$buildDir/Tools/bin")
+//}
+
+// 打包 -> EXE镜像（build/package/image）
+task package2Image(type: Exec) {
+    dependsOn("build", copyDependencies)
+//    dependsOn("jlink", copyBin)
+
+    def iconPath = "$projectDir/src/main/resources/application.ico"
+    if (org.gradle.internal.os.OperatingSystem.current().windows) {
+        iconPath = "$projectDir/src/main/resources/application.ico"
+    } else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
+        iconPath = "$projectDir/src/main/resources/application.icns"
+    } else if (org.gradle.internal.os.OperatingSystem.current().linux) {
+        iconPath = "$projectDir/src/main/resources/application.png"
+    }
+
+    commandLine("jpackage")
+    args(
+            "-n", application.applicationName,
+            "-t", "app-image",
+            "--java-options", application.applicationDefaultJvmArgs.join(" "),
+            "-p", "$buildDir/modules" + File.pathSeparator + "$buildDir/libs",
+            "-d", "$buildDir/package/image",
+            "-m", "${application.mainModule.get()}/${application.mainClass.get()}",
+            "--icon", "${iconPath}",
+            "--app-version", "$version"
+    )
+}
+
+// 打包 -> MSI安装包（build/package/installer）
+task package2Installer(type: Exec) {
+    dependsOn("build", copyDependencies)
+//    dependsOn("jlink", copyBin)
+
+    def installerType = "msi"
+    def iconPath = "$projectDir/src/main/resources/application.ico"
+    if (org.gradle.internal.os.OperatingSystem.current().windows) {
+        installerType = "msi"
+        iconPath = "$projectDir/src/main/resources/application.ico"
+    } else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
+        installerType = "dmg"
+        iconPath = "$projectDir/src/main/resources/application.icns"
+    } else if (org.gradle.internal.os.OperatingSystem.current().linux) {
+        installerType = "deb"
+        iconPath = "$projectDir/src/main/resources/application.png"
+    }
+
+    def argsList = [
+            "-n", application.applicationName,
+            "-t", "${installerType}",
+            "--java-options", application.applicationDefaultJvmArgs.join(" "),
+            "-p", "$buildDir/modules" + File.pathSeparator + "$buildDir/libs",
+            "-d", "$buildDir/package/installer",
+            "-m", "${application.mainModule.get()}/${application.mainClass.get()}",
+            "--icon", "${iconPath}",
+            "--app-version", "$version"
+    ]
+
+    def winInstallerOptionList = [
+            "--win-dir-chooser",
+            "--win-menu",
+            "--win-shortcut",
+            "--win-menu-group",
+            "${application.applicationName}"
+    ]
+
+    def linuxInstallerOptionList = [
+            "--linux-deb-maintainer",
+            "morningwn@126.com",
+            "--linux-menu-group",
+            "${application.applicationName}",
+            "--linux-shortcut"
+    ]
+
+    if (org.gradle.internal.os.OperatingSystem.current().windows) {
+        argsList.addAll(winInstallerOptionList)
+    } else if (org.gradle.internal.os.OperatingSystem.current().linux) {
+        argsList.addAll(linuxInstallerOptionList)
+    }
+
+    commandLine("jpackage")
+    args(argsList)
+}

@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.22)
+project(Tools C)
+
+set(CMAKE_C_STANDARD 11)
+set(LIBRARY_OUTPUT_PATH "${PROJECT_SOURCE_DIR}")
+set(EXECUTABLE_OUTPUT_PATH "${PROJECT_SOURCE_DIR}/app/")
+
+#add_executable(MainTools src/main/c/Main.c)
+add_executable(MainTest src/test/c/Main.c)
+
+add_library(winTool SHARED src/main/c/win.c)
+
+INCLUDE_DIRECTORIES(includes)
+INCLUDE_DIRECTORIES(includes/win32)
+
+link_directories(includes)
+
+link_libraries(includes)
+link_libraries(includes/server)
+
+#target_link_libraries(MainTools dl)
+
+

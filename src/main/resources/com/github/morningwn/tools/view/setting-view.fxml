@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.*?>
+
+<AnchorPane stylesheets="@../css/setting.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.morningwn.tools.controller.SettingController">
+    <VBox AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
+        <VBox styleClass="setting-cell">
+            <HBox styleClass="setting-cell-title">
+                <Label text="壁纸设置" HBox.hgrow="ALWAYS"/>
+            </HBox>
+            <VBox styleClass="setting-cell-content">
+                <HBox styleClass="setting-cell-item">
+                    <Label text="时间格式" styleClass="setting-cell-item-left"/>
+                    <TextField fx:id="timeStyleTxf"/>
+                </HBox>
+                <HBox styleClass="setting-cell-item">
+                    <Button fx:id="wallpaperDirBtn" onAction="#wallpaperDirAction" mnemonicParsing="false" text="壁纸文件夹"
+                            styleClass="setting-cell-item-left"/>
+                    <TextField fx:id="wallpaperDirTxf"/>
+                </HBox>
+                <HBox styleClass="setting-cell-item">
+                    <Label text="更新频率（小时）" styleClass="setting-cell-item-left"/>
+                    <Spinner fx:id="wallpaperUpdateSpr" amountToStepBy="1" max="48" min="1"/>
+                </HBox>
+                <HBox styleClass="setting-cell-item">
+                    <Label text="是否显示时间" styleClass="setting-cell-item-left"/>
+                    <ToggleSwitch fx:id="showTimeTs"/>
+                </HBox>
+            </VBox>
+        </VBox>
+<!--        <VBox styleClass="setting-cell">-->
+<!--            <HBox styleClass="setting-cell-title">-->
+<!--                <Label text="桌面收纳设置" HBox.hgrow="ALWAYS"/>-->
+<!--            </HBox>-->
+<!--            <VBox styleClass="setting-cell-content">-->
+<!--                <HBox styleClass="setting-cell-item">-->
+<!--                    <Button mnemonicParsing="false" text="图标映射文件夹" styleClass="setting-cell-item-left"/>-->
+<!--                    <TextField fx:id="fileListDirTxf"/>-->
+<!--                </HBox>-->
+<!--            </VBox>-->
+<!--        </VBox>-->
+        <HBox styleClass="setting-cell-btn">
+            <Button onAction="#saveExit">保存退出</Button>
+            <Button onAction="#exit">取消</Button>
+            <Button onAction="#restoreDefault">恢复默认</Button>
+        </HBox>
+    </VBox>
+</AnchorPane>

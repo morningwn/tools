@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<AnchorPane stylesheets="@../css/time.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.morningwn.tools.controller.TimeController">
+    <HBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <VBox alignment="CENTER">
+            <Label fx:id="timeLabel" id="timeLabel" text="09:48:35" textAlignment="CENTER">
+            </Label>
+        </VBox>
+        <VBox alignment="CENTER">
+            <Label fx:id="dateLabel" text="2021/01/01"/>
+            <Label fx:id="weekLabel" text="星期四"/>
+        </VBox>
+    </HBox>
+</AnchorPane>
