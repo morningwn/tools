@@ -1,6 +1,6 @@
 package com.github.morningwn.tools.view.stage;
 
-import com.github.morningwn.tools.utils.WinUtils;
+import com.github.morningwn.tools.utils.window.WindowUtils;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -15,10 +15,10 @@ public enum ViewEnum {
      *
      */
     NOTE("note-view.fxml", "备忘录", StageStyle.DECORATED, null, Color.WHITE),
-    TIME("time-view.fxml", "Tools/TIME", StageStyle.TRANSPARENT, new Point2D(WinUtils.getWidth() - 350, 50.0), null),
+    TIME("time-view.fxml", "Tools/TIME", StageStyle.TRANSPARENT, new Point2D(WindowUtils.getWidth() - 350, 50.0), null),
     FILE_LIST("file-list-view.fxml", "Tools/FILE_LIST", StageStyle.DECORATED, null, Color.WHITE),
     SETTING("setting-view.fxml", "设置", StageStyle.DECORATED, null, Color.WHITE),
-    WALLPAPER("wallpaper-view.fxml", "Tools/WALLPAPER", StageStyle.TRANSPARENT, new Point2D(0, 0), new Point2D(WinUtils.getWidth(), WinUtils.getHeight()), null),
+    WALLPAPER("wallpaper-view.fxml", "Tools/WALLPAPER", StageStyle.TRANSPARENT, new Point2D(0, 0), new Point2D(WindowUtils.getWidth(), WindowUtils.getHeight()), null),
     WALLPAPER_FILE("wallpaper-file-view.fxml", "壁纸列表", StageStyle.DECORATED, null, Color.WHITE);
 
     /**

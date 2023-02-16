@@ -1,5 +1,7 @@
 package com.github.morningwn.tools.utils;
 
+import com.github.morningwn.tools.exception.NotSupportException;
+
 import java.io.File;
 
 /**
@@ -20,7 +22,13 @@ public class ConfigUtils {
     }
 
     public static String getBaseDir() {
-        return System.getProperty("user.home") + File.separator + "AppData" + File.separator + "Local" + File.separator + "Tools";
+        if (OSUtils.isWindows()) {
+            return System.getProperty("user.home") + File.separator + "AppData" + File.separator + "Local" + File.separator + "Tools";
+        } else if (OSUtils.isLinux()) {
+            return System.getProperty("user.home") + File.separator+ ".com.github.morningwn.Tools";
+        } else {
+            throw new NotSupportException();
+        }
     }
 
     public static String getTmpDir() {

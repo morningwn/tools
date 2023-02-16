@@ -3,7 +3,7 @@ package com.github.morningwn.tools.controller;
 import com.github.morningwn.tools.component.WallpaperComponent;
 import com.github.morningwn.tools.entity.WallpaperEntity;
 import com.github.morningwn.tools.utils.JSONUtils;
-import com.github.morningwn.tools.utils.WinUtils;
+import com.github.morningwn.tools.utils.window.WindowUtils;
 import com.github.morningwn.tools.utils.bean.BeanUtils;
 import com.github.morningwn.tools.view.stage.ViewEnum;
 import javafx.application.Platform;
@@ -46,7 +46,7 @@ public class WallpaperController extends Controller {
     private WallpaperEntity wallpaper;
     private volatile Thread playThread;
 
-    private String fileUrl = "C:/Program Files (x86)/Steam/steamapps/workshop/content/431960/898123863/index.html";
+//    private String fileUrl = "C:/Program Files (x86)/Steam/steamapps/workshop/content/431960/898123863/index.html";
 //    private String fileUrl = "C:/Program Files (x86)/Steam/steamapps/workshop/content/431960/898123863/img/image.jpg";
 //    private String fileUrl = "D:/迅雷下载/神话/神话DVD高清[第1集].mkv";
 
@@ -54,7 +54,7 @@ public class WallpaperController extends Controller {
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.info("initialize");
 //        setImageWallpaper(fileUrl);
-        setHtmlWallpaper(fileUrl);
+//        setHtmlWallpaper(fileUrl);
 //        setVideoWallpaper();
         LOGGER.info("initialize end");
     }
@@ -63,12 +63,12 @@ public class WallpaperController extends Controller {
     public void show() {
         WallpaperComponent wallpaperComponent = BeanUtils.getBean(WallpaperComponent.class);
         wallpaperComponent.start();
-        WinUtils.setWinIconAfter(ViewEnum.WALLPAPER.getTitle());
+        WindowUtils.setWinIconAfter(ViewEnum.WALLPAPER.getTitle());
     }
 
     @Override
     public void close() {
-        WinUtils.setWinIconTop(ViewEnum.WALLPAPER.getTitle());
+        WindowUtils.setWinIconTop(ViewEnum.WALLPAPER.getTitle());
     }
 
     public void setWallpaper(WallpaperEntity wallpaper) {
@@ -93,8 +93,8 @@ public class WallpaperController extends Controller {
                 final ExecutorService imageExecutor;
                 try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoFilename)) {
                     grabber.start();
-                    imageView.setFitWidth(WinUtils.getWidth());
-                    imageView.setFitHeight(WinUtils.getHeight());
+                    imageView.setFitWidth(WindowUtils.getWidth());
+                    imageView.setFitHeight(WindowUtils.getHeight());
                     imageView.setSmooth(true);
 //                    imageView.setFitWidth(grabber.getImageWidth());
 //                    imageView.setFitHeight(grabber.getImageHeight());
@@ -206,7 +206,7 @@ public class WallpaperController extends Controller {
         File file = new File(url);
         try {
             engine.load(file.toURI().toURL().toString());
-            webView.setPrefSize(WinUtils.getWidth(), WinUtils.getHeight());
+            webView.setPrefSize(WindowUtils.getWidth(), WindowUtils.getHeight());
             addNode(webView);
         } catch (MalformedURLException e) {
             LOGGER.error("", e);
@@ -218,16 +218,16 @@ public class WallpaperController extends Controller {
         imageView = new ImageView();
         Image image = new Image(url);
         imageView.setImage(image);
-        imageView.setFitWidth(WinUtils.getWidth());
-        imageView.setFitHeight(WinUtils.getHeight());
+        imageView.setFitWidth(WindowUtils.getWidth());
+        imageView.setFitHeight(WindowUtils.getHeight());
 
         addNode(imageView);
     }
 
     private void addNode(Node node) {
         root.getChildren().add(node);
-        root.setMinSize(WinUtils.getWidth(), WinUtils.getHeight());
-        root.setPrefSize(WinUtils.getWidth(), WinUtils.getHeight());
+        root.setMinSize(WindowUtils.getWidth(), WindowUtils.getHeight());
+        root.setPrefSize(WindowUtils.getWidth(), WindowUtils.getHeight());
         AnchorPane.setBottomAnchor(node, 0.0);
         AnchorPane.setTopAnchor(node, 0.0);
         AnchorPane.setLeftAnchor(node, 0.0);

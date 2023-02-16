@@ -70,7 +70,7 @@ public class WallpaperComponent implements LifeBean {
 
     private void changeWallpaper(WallpaperEntity image) {
         WallpaperController controller = (WallpaperController) BeanUtils.getStage(ViewEnum.WALLPAPER).getController();
-//        controller.setWallpaper(image);
+        controller.setWallpaper(image);
     }
 
     /**
